@@ -58,6 +58,10 @@ def learn_agent(agent: Qlearning) -> None:
             # A small penalty in each step to make the agent want to reach the goal as quickly as possible.
             agent.add_reward(-0.1)
 
+            # reward for reaching a goal
+            if next_state[0] >= 0.49:
+                agent.add_reward(10)
+
             # Replace the actual continuous conditions with the corresponding state in q_table
             next_state = discretize_observation_space(next_state, env.observation_space.low, env.observation_space.high,
                                                       np.array(agent.get_discrete_space()[:-1]))
@@ -71,11 +75,11 @@ def learn_agent(agent: Qlearning) -> None:
             state = next_state
 
         # Statistics
-        show = 100
+        show = 500
         if (i + 1) % show == 0:
             print(f"Episode: {i + 1} / {EPISODES} -> {100 * (i + 1) / EPISODES}%")
             print(f"Epsilon: {agent.get_epsilon()}")
-            print(f"Avr reward: {rew / show}")
+            print(f"Avr reward: {rew / show}\n")
             rew = 0
 
 
@@ -98,7 +102,7 @@ if __name__ == '__main__':
     #   0 -> position of the car along the x-axis   Min: -1.2   Max: 0.6
     #   1 -> velocity of the car                    Min: -0.07  MAx: 0.07
 
-    # We divided the continuous observation space into 90 velocity intervals and 90 position intervals.
+    # Divided the continuous observation space into 90 velocity intervals and 90 position intervals.
     # Experimentally selected values.
     """
     q.discrete_space_init((90, 90, len(q.get_action_space())))
@@ -112,7 +116,7 @@ if __name__ == '__main__':
     # Instead of initializing the model, you can load the already pre-trained one for further development. 
     # All necessary parameters are stored in the file and will be automatically filled in the class.
     """
-    # q.load_model('models\\2022_03_28--23_33_48.npz')
+    # q.load_model('models\\2022_03_28--23_53_07.npz')
 
     # Train model
     learn_agent(q)
