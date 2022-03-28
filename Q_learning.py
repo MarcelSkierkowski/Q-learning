@@ -93,7 +93,7 @@ class Qlearning:
         """Returns the current value of epsilon"""
         return self._epsilon
 
-    def make_decision(self, state: np.array) -> float:
+    def make_decision(self, state: np.array) -> int:
         """
             Chooses the next action
             The epsilon value determines the probability that the next action will be random.
